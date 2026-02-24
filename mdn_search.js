@@ -1,5 +1,6 @@
 let RESULTS = 6
 let BASE = "https://developer.mozilla.org"
+let BASE2 = "/en-US/docs/"
 // idea: give priority to matches which start with \b
 let SEARCH = (text)=>{
 	return page => page.title.toLowerCase().includes(text)
@@ -22,13 +23,13 @@ browser.omnibox.onInputChanged.addListener((text, suggest)=>{
 					CSS: "🟦",
 					HTML: "🟥",
 					API: "🟨",
-					Javascript: "🟨",
+					JavaScript: "🟨",
 					Events: "🟨",
 				}
 			}
 		}[p[2]]?.[p[3]]?.[p[4]] ?? ""
 		return {
-			content: "\u200B"+page.url,
+			content: "\u200B"+page.url.replace(BASE2, "\u200B"),
 			description: z+" "+page.title,
 		}
 	})
@@ -37,9 +38,16 @@ browser.omnibox.onInputChanged.addListener((text, suggest)=>{
 
 // Open the page based on how the user clicks on a suggestion.
 browser.omnibox.onInputEntered.addListener((text, disposition)=>{
-	if (text.startsWith("\u200B"))
+//	let x = new Blob(['owo'], {type: "text/plain"})
+//	let q = URL.createObjectURL(x)
+//	browser.tabs.create({url:q})
+//	return
+	
+	if (text.startsWith("\u200B")) {
 		text = text.substr(1)
-	else
+		if (text.startsWith("\u200B"))
+			text = BASE2+text.substr(1)
+	} else
 		text = "/en-US/search?q="+encodeURIComponent(text)
 	console.log("entered text", text)
 	

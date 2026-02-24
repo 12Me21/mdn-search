@@ -16,5 +16,6 @@
 		"gecko": {
 			"id": "mdn-search@ralsei.cock"
 		}
-	}
+	},
+	"web_accessible_resources": ["*"]
 }
